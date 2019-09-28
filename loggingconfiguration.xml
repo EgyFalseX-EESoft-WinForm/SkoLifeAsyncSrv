@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://logging.apache.org/log4php/">
+    <appender name="FileLog" class="LoggerAppenderFile">
+        <layout class="LoggerLayoutPattern" />
+        <param name="file" value="log/SkoLifeAsyncSrv_Logs.log" />
+        <param name="append" value="true" />
+    </appender>
+    <root>
+        <level value="DEBUG" />
+        <appender_ref ref="FileLog" />
+    </root>
+</configuration>
