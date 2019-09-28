@@ -10,12 +10,16 @@
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 //includes
+include_once('../../log4php/Logger.php');
 include_once '../config/database.php';
 include_once '../Modules/opconfig.php';
 
 //Instantiate DB & connect
 $database = new Database();
 $db = $database->getConfigConnection();
+
+// Fetch a logger, it will inherit settings from the root logger
+$log = Logger::getLogger(__CLASS__);
 
 //Get Op Config Data
 $opconfig = new OpConfig($db);
@@ -52,6 +56,7 @@ if ($num > 0) {
         //Push to $return_arr['data']
         array_push($return_arr, $op_item);
     }
+    $log->info('Requested config return with '.count($return_arr).' rows');
     //Convert to JSON
     echo json_encode($return_arr);
 }
@@ -61,4 +66,5 @@ else
     echo json_encode(
             array('message' => 'No Data found')
             );
+    $log->info('Requested config return with No Data found');
 }

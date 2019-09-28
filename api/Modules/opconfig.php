@@ -20,8 +20,6 @@ class OpConfig {
     
     // constructor with $db as database connection
     public function __construct($db){
-        // Tell log4php to use our configuration file.
-        Logger::configure('../../loggingconfiguration.xml');
         // Fetch a logger, it will inherit settings from the root logger
         $this->log = Logger::getLogger(__CLASS__);
         
@@ -43,11 +41,8 @@ class OpConfig {
             
             // prepare query
             $result = $this->conn->prepare($query);
-            $success = $result->execute();
-            if (!$success) {
-                $this->log->error($result->errorInfo());
-            }
-            
+            $result->execute();
+            //$this->log->info('Requested config return with '.mysqli_num_rows($rowCount).' rows');
             return $result;
             
         } catch (Exception $ex) {

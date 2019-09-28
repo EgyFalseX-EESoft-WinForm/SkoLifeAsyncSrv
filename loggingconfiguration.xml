@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration xmlns="http://logging.apache.org/log4php/">
-    <appender name="FileLog" class="LoggerAppenderFile">
+    <appender name="FileLog" class="LoggerAppenderDailyFile">
         <layout class="LoggerLayoutPattern" />
-        <param name="file" value="log/SkoLifeAsyncSrv_Logs.log" />
+        <param name="file" value="/logs/SkoLifeAsyncSrv/%s.log" />
+        <param name="datePattern" value="Y-m" />
         <param name="append" value="true" />
     </appender>
     <root>

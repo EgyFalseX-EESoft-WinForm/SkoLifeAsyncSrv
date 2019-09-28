@@ -22,34 +22,9 @@ $db = $database->getConfigConnection();
 
 // Get row posted data
 $data = array();
-//$data = file_get_contents("php://input");
+$data = file_get_contents("php://input");
 
-$data = '[
-	"1",
-	[
-		[
-			"Yousra Ayman Abdelmaree \'Abd Al - Jaid Hussein",
-			20,
-			11,
-			1,
-			1,
-			"يسرا عبدالمرضى ايمن اللقب",
-			"Yousra Ayman Abdelmaree \'Abd Al - Jaid Hussein",
-			"2006-06-25",
-			"عنوان الطالب - منطقة - شارع - اقامة",
-			"01150888088",
-			"01150888088"
-		]
-	],
-	[
-		{
-			"dyn_order": 1,
-			"op_col_name": "edit_date",
-			"op_col_value": "2019092812",
-			"update_query": "SELECT FORMAT(GETDATE(), ) AS edit_date"
-		}
-	]
-]';
+//$data = '';
 
 $oppost = new OpPost($db, $data);
 

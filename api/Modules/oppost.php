@@ -29,11 +29,9 @@ class OpPost {
     
     // constructor with $db as database connection
     public function __construct($db, $data){
-        // Tell log4php to use our configuration file.
-        Logger::configure('../../loggingconfiguration.xml');
         // Fetch a logger, it will inherit settings from the root logger
         $this->log = Logger::getLogger(__CLASS__);
-
+        
         $this->config_conn = $db;
         $arr = json_decode($data, true);
         $this->op_id = $arr[0];
@@ -90,27 +88,15 @@ class OpPost {
                 $i = 0;
                 for($i = 0; $i < count($this->col_namearr); $i++) 
                 {
-                    //$cell = mysql_real_escape_string($item[$i]);
-                    //$cell = mysqli_real_escape_string($this->op_con, $item[$i]);
-                    $cell = $item[$i];
-                    $test = mysqli_real_escape_string($this->op_con, $cell);
-                    
-                    //$cell = $item[$i];
-                    if ($i < count($item) & $cell != NULL) {
-                        $query = $query.sprintf($this->col_convarr[$i], $cell);    
-                    }
-                    else {
-                        $query = $query.'NULL';
-                    }
-
-                    if ($i + 1 < count($this->col_convarr)) {
+                    $query = $query.':'.$i;
+                    if ($i + 1 < count($this->col_namearr)) {
                         $query = $query.",";
                     }
-                    else
-                    {
+                    else {
                         $query = $query.")";
                     }
                 }
+                //$cell = $item[$i];
                 $i = 0;
                 $query = $query." ON DUPLICATE KEY UPDATE ";
                 for($i = 0; $i < count($this->col_namearr); $i++) 
@@ -119,16 +105,17 @@ class OpPost {
                     if ($i + 1 < count($this->col_namearr)) {
                         $query = $query.",";
                     }
-                    else
-                    {
+                    else {
                         $query = $query.";";
                     }
                 }
+                
                 $result = $this->op_con->prepare($query);
-                $success = $result->execute();
-                if (!$success) {
-                    $this->log->error($result->errorInfo());
+                for($i = 0; $i < count($this->col_namearr); $i++) {
+                    $result->bindParam(':'.$i, $item[$i]);
                 }
+                
+                $result->execute();
             }
         }
         catch (exception $ex) {
@@ -148,10 +135,7 @@ class OpPost {
                 $result->bindParam(":value", $op_col_value);
                 $result->bindParam(":op_id", $this->op_id);
                 $result->bindParam(":op_col_name", $op_col_name);
-                $success = $result->execute();
-                if (!$success) {
-                    $this->log->error($result->errorInfo());
-                }
+                $result->execute();
             }
          } catch (Exception $ex) {
              $this->log->error($ex->getMessage());
