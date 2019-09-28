@@ -37,7 +37,8 @@ class OpConfig {
               FROM op_config
                 INNER JOIN op_connection
                   ON op_config.op_con_id = op_connection.op_con_id
-                WHERE enable = TRUE";
+                WHERE enable = TRUE
+                ORDER BY op_config.op_order";
             
             // prepare query
             $result = $this->conn->prepare($query);

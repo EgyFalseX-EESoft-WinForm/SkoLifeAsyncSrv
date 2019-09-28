@@ -39,8 +39,9 @@ class OpPost {
         $this->dynarr = $arr[2];
         
         $this->Perpare();
-        $this->Merge();
-        $this->UpdateDyn();
+        if ($this->Merge()) {
+        $this->UpdateDyn();    
+        }
     }
     
     public function Perpare() {
@@ -78,7 +79,8 @@ class OpPost {
         }
     }
     
-    public function Merge(){
+    public function Merge() : bool{
+        $return = true;
         try {
             
             foreach ($this->dataarr as $item)
@@ -120,7 +122,9 @@ class OpPost {
         }
         catch (exception $ex) {
             $this->log->error($ex->getMessage());
+            $return = false;
         }
+        return $return;
     }
     
     public function UpdateDyn() {
