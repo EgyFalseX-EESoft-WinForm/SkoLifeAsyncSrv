@@ -33,11 +33,12 @@ class OpConfig {
                 op_config.op_desc,
                 op_connection.op_connection AS src_con,
                 op_src_filter,
-                CONCAT('SELECT ', op_src_col, ' FROM ', op_src_tbl) AS sql_query
+                CONCAT('SELECT ', op_src_col, ' FROM ', op_src_tbl) AS sql_query,
+                s2w
               FROM op_config
                 INNER JOIN op_connection
                   ON op_config.op_con_id = op_connection.op_con_id
-                WHERE enable = TRUE
+                WHERE enable = TRUE 
                 ORDER BY op_config.op_order";
             
             // prepare query

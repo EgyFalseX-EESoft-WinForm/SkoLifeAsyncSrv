@@ -41,6 +41,7 @@ if ($num > 0) {
             'op_col_name' => $op_col_name,
             'op_col_value' => $op_col_value,
             'update_query' => $update_query,
+            's2w' => $s2w,
                    );
            array_push($listDyn, $dyn_item);
        }
