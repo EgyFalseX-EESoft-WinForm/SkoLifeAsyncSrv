@@ -57,7 +57,7 @@ class OpRequest {
             $this->op_con = $database->getConnection($row["op_host"], $row["op_db_name"], $row["op_username"], $row["op_password"]);
         }
         catch (exception $ex) {
-            $this->log->error($ex->getMessage());
+            $this->log->error("OP ".$op.": ".$ex-> getMessage());
         }
     }
     
@@ -77,7 +77,7 @@ class OpRequest {
             }
         }
         catch (exception $ex) {
-            $this->log->error($ex->getMessage());
+            $this->log->error("OP ".$op.": ".$ex-> getMessage());
         }
     }
 }

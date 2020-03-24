@@ -75,7 +75,7 @@ class OpPost {
             }
         }
         catch (exception $ex) {
-            $this->log->error($ex->getMessage());
+            $this->log->error("OP ".$op.": ".$ex-> getMessage());
         }
     }
     
@@ -121,7 +121,7 @@ class OpPost {
             }
         }
         catch (exception $ex) {
-            $this->log->error($ex->getMessage());
+            $this->log->error("OP ".$op.": ".$ex-> getMessage());
             $return = false;
         }
         return $return;
@@ -142,7 +142,7 @@ class OpPost {
                 $result->execute();
             }
          } catch (Exception $ex) {
-             $this->log->error($ex->getMessage());
+             $this->log->error("OP ".$op.": ".$ex-> getMessage());
          }
     }
 }

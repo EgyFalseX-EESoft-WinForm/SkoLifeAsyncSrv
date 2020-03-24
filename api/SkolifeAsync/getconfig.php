@@ -31,6 +31,8 @@ if ($num > 0) {
     while($configRow = $result->fetch(PDO::FETCH_ASSOC))
     {
        extract($configRow);
+       
+       // Get Dyn Data
        $resultDyn = $opconfig->OpConfigDyn($op_id);
        $listDyn = array();
        while($dynRow = $resultDyn->fetch(PDO::FETCH_ASSOC))
@@ -40,19 +42,35 @@ if ($num > 0) {
             'dyn_order' => $dyn_order,
             'op_col_name' => $op_col_name,
             'op_col_value' => $op_col_value,
-            'update_query' => $update_query,
-            's2w' => $s2w,
-                   );
+            'update_query' => $update_query,    
+               );
            array_push($listDyn, $dyn_item);
+       }
+       
+       // Get Key Data
+       $resultKey = $opconfig->OpConfigKey($op_id);
+       $listKey = array();
+       while($KeyRow = $resultKey->fetch(PDO::FETCH_ASSOC))
+       {
+           extract($KeyRow);
+           $Key_item = array(
+            'op_src_col_name' => $op_src_col_name,
+            'op_dst_col_name' => $op_dst_col_name   
+               );
+           array_push($listKey, $Key_item);
        }
         
         $op_item = array(
             'op_id' => $op_id,
             'op_order' => $op_order,
             'op_desc' => $op_desc,
+            'op_dst_tbl' => $op_dst_tbl,
+            'op_dst_col' => $op_dst_col,
             'sql_query' => $sql_query,
             'op_src_filter' => $op_src_filter,
-            'dyn_list' => $listDyn
+            's2w' => $s2w,
+            'dyn_list' => $listDyn,
+            'key_list' => $listKey
                 );
         //Push to $return_arr['data']
         array_push($return_arr, $op_item);

@@ -47,7 +47,7 @@ class OpUpdateDyn {
                 $result->execute();
             }
          } catch (Exception $ex) {
-             $this->log->error($ex->getMessage());
+             $this->log->error("OP ".$op.": ".$ex-> getMessage());
          }
     }
 }

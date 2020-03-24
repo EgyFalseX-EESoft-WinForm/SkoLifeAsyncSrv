@@ -31,10 +31,12 @@ class OpConfig {
                 op_config.op_id,
                 op_config.op_order,
                 op_config.op_desc,
+                op_config.op_dst_col,
+                op_config.op_dst_tbl,
                 op_connection.op_connection AS src_con,
                 op_src_filter,
-                CONCAT('SELECT ', op_src_col, ' FROM ', op_src_tbl) AS sql_query,
-                s2w
+                s2w,
+                CONCAT('SELECT ', op_src_col, ' FROM ', op_src_tbl) AS sql_query
               FROM op_config
                 INNER JOIN op_connection
                   ON op_config.op_con_id = op_connection.op_con_id
@@ -48,7 +50,7 @@ class OpConfig {
             return $result;
             
         } catch (Exception $ex) {
-            $this->log->error($ex->getMessage());
+            $this->log->error("OP ".$op.": ".$ex-> getMessage());
         }
     }
     public function OpConfigDyn($op){
@@ -64,7 +66,27 @@ class OpConfig {
             return $result;
         
         } catch (Exception $ex) {
-            $this->log->error($ex->getMessage());
+            
+            $this->log->error("OP ".$op.": ".$ex-> getMessage());
+        }
+        
+    }
+    
+    public function OpConfigKey($op){
+        try{
+            $query = "SELECT op_src_col_name,op_dst_col_name FROM op_key WHERE op_id = ".$op;
+            // prepare query
+            $result = $this->conn->prepare($query);
+            $success = $result->execute();
+            if (!$success) {
+                $this->log->error($result->errorInfo());
+            }
+            
+            return $result;
+        
+        } catch (Exception $ex) {
+            
+            $this->log->error("OP ".$op.": ".$ex-> getMessage());
         }
         
     }
