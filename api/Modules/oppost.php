@@ -27,6 +27,8 @@ class OpPost {
     private $col_namearr;
     private $col_convarr;
     
+    private $field_type;
+    
     // constructor with $db as database connection
     public function __construct($db, $data){
         // Fetch a logger, it will inherit settings from the root logger
@@ -73,6 +75,16 @@ class OpPost {
                 array_push($this->col_namearr,$row["op_col_name"]);
                 array_push($this->col_convarr,$row["conversion"]);
             }
+            
+            // get fields types
+            $result = $this->op_con->prepare('DESCRIBE '.$this->op_dst_tbl);
+            $result->execute();
+            while($row = $result->fetch(PDO::FETCH_ASSOC)) 
+            {
+//                array_push($this->field_type[$row['Field']], $row['Field']);
+                $this->field_type[$row['Field']] = $row['Type'];
+            }
+
         }
         catch (exception $ex) {
             $this->log->error("OP ".$op.": ".$ex-> getMessage());
@@ -114,7 +126,16 @@ class OpPost {
                 
                 $result = $this->op_con->prepare($query);
                 for($i = 0; $i < count($this->col_namearr); $i++) {
-                    $result->bindParam(':'.$i, $item[$i]);
+                    //check if the field should be bytes array or not
+                    $fieldName = $this->col_namearr[$i];
+                    $fieldType = $this->field_type[$fieldName];
+                    if ($fieldType == 'blob' || $fieldType == 'mediumblob' || $fieldType == 'longblob') {
+                        $decoded = base64_decode($item[$i]);                        
+                        $result->bindParam(':'.$i, $decoded, PDO::PARAM_LOB);
+                    }
+                    else{
+                        $result->bindParam(':'.$i, $item[$i]);
+                    }
                 }
                 
                 $result->execute();

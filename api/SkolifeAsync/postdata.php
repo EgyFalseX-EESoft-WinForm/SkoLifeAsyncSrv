@@ -24,7 +24,44 @@ $db = $database->getConfigConnection();
 $data = array();
 $data = file_get_contents("php://input");
 
-//$data = '';
+//$data = '[
+//	"1",
+//	[
+//		[
+//			494026,
+//			20,
+//			31,
+//			3,
+//			1,
+//			"على على اسلام اللقب",
+//			"On the title of Islam",
+//			"2004-09-04",
+//			"عنوان الطالب - منطقة - شارع - اقامة",
+//			"01150888088",
+//			"01150888088",
+//			494026,
+//			null,
+//			"28307152104301",
+//			"30409042100854",
+//			"494026",
+//			"147056382",
+//			null,
+//			null,
+//			null,
+//			null,
+//			true,
+//			"/9j/4AAQSkZJRgABAgAAAQABAAD"
+//		]
+//	],
+//	[
+//		{
+//			"dyn_order": 1,
+//			"op_col_name": "edit_date",
+//			"op_col_value": "2020100213",
+//			"update_query": "SELECT FORMAT(GETDATE(), \'yyyyMMddHH\') AS edit_date"
+//		}
+//	]
+//]';
 
 $oppost = new OpPost($db, $data);
 
