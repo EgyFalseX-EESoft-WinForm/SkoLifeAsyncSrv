@@ -95,6 +95,18 @@ class OpPost {
         $return = true;
         try {
             
+            $query = "SELECT clear_require,op_dst_tbl FROM op_config WHERE op_id = :op_id";
+            $result = $this->config_conn->prepare($query);
+            $result->bindParam(':op_id', $this->op_id);
+            $result->execute();
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            
+            if ($row["clear_require"]) {
+                $query = "DELETE FROM ".$row["op_dst_tbl"];
+                $result = $this->op_con->prepare($query);
+                $result->execute();
+            }
+            
             foreach ($this->dataarr as $item)
             {
                 $query = "INSERT INTO ". $this->op_dst_tbl
