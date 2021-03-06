@@ -142,8 +142,7 @@ class OpPost {
                     $fieldName = $this->col_namearr[$i];
                     $fieldType = $this->field_type[$fieldName];
                     if ($fieldType == 'blob' || $fieldType == 'mediumblob' || $fieldType == 'longblob') {
-                        $decoded = base64_decode($item[$i]);                        
-                        $result->bindParam(':'.$i, $decoded, PDO::PARAM_LOB);
+                        $result->bindParam(':'.$i, base64_decode($item[$i]), PDO::PARAM_LOB);
                     }
                     else{
                         $result->bindParam(':'.$i, $item[$i]);
